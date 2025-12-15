@@ -60,6 +60,8 @@ android {
     }
 }
 
+// Call the flutter extension's source method to set the Flutter source directory
+// Dynamic invocation is required because the Flutter Gradle plugin extension is defined in Groovy
 flutter.invokeMethod("source", "../..")
 
 dependencies {
