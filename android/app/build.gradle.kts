@@ -20,11 +20,20 @@ apply(plugin = "com.android.application")
 apply(plugin = "kotlin-android")
 apply(from = "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle")
 
+// Flutter Gradle extensions are exposed from Groovy scripts, so Groovy interop is required here.
 val flutter = extensions.getByName("flutter") as GroovyObject
+val flutterCompileSdkVersion = flutter.getProperty("compileSdkVersion") as? Int
+    ?: throw GradleException("flutter.compileSdkVersion is missing or not an Int")
+val flutterNdkVersion = flutter.getProperty("ndkVersion") as? String
+    ?: throw GradleException("flutter.ndkVersion is missing or not a String")
+val flutterMinSdkVersion = flutter.getProperty("minSdkVersion") as? Int
+    ?: throw GradleException("flutter.minSdkVersion is missing or not an Int")
+val flutterTargetSdkVersion = flutter.getProperty("targetSdkVersion") as? Int
+    ?: throw GradleException("flutter.targetSdkVersion is missing or not an Int")
 
 android {
-    compileSdkVersion(flutter.getProperty("compileSdkVersion") as Int)
-    ndkVersion = flutter.getProperty("ndkVersion") as String
+    compileSdkVersion(flutterCompileSdkVersion)
+    ndkVersion = flutterNdkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -41,8 +50,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.hikepal"
-        minSdkVersion(flutter.getProperty("minSdkVersion") as Int)
-        targetSdkVersion(flutter.getProperty("targetSdkVersion") as Int)
+        minSdkVersion(flutterMinSdkVersion)
+        targetSdkVersion(flutterTargetSdkVersion)
         versionCode = flutterVersionCode.toInt()
         versionName = flutterVersionName
     }

@@ -1,6 +1,6 @@
-val kotlin_version by extra("1.6.10")
-
 buildscript {
+    val kotlin_version by extra("1.6.10")
+
     repositories {
         google()
         mavenCentral()
@@ -24,7 +24,9 @@ subprojects {
     project.buildDir = File(rootProject.buildDir, project.name)
 }
 subprojects {
-    project.evaluationDependsOn(":app")
+    if (project.path != ":app") {
+        project.evaluationDependsOn(":app")
+    }
 }
 
 tasks.register<Delete>("clean") {

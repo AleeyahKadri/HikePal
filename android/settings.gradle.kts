@@ -5,7 +5,7 @@ include(":app")
 val localPropertiesFile = File(rootProject.projectDir, "local.properties")
 val properties = Properties()
 
-check(localPropertiesFile.exists())
+check(localPropertiesFile.exists()) { "local.properties file not found in android directory" }
 localPropertiesFile.reader(Charsets.UTF_8).use { reader -> properties.load(reader) }
 
 val flutterSdkPath = properties.getProperty("flutter.sdk")
